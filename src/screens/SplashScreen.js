@@ -50,7 +50,7 @@ const SplashScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.main, {opacity: fadeInAnim}, rotateStyle]}>
-        <Text style={styles.text}>Hello World!</Text>
+        <Text style={styles.text}>Movie App</Text>
       </Animated.View>
     </View>
   );
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#10316B',
+    backgroundColor: '#222222',
   },
   main: {
     flex: 1,

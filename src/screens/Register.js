@@ -8,8 +8,10 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-const Register = () => {
+const Register = (props) => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

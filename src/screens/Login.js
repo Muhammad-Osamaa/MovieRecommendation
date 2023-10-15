@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useState, useRef} from 'react';
 import {
   Text,
@@ -10,6 +11,7 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Login = props => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -20,7 +22,7 @@ const Login = props => {
     setPasswordVisible(!passwordVisible);
   };
   const handleLogin = () => {
-    navigation.navigate('Home');
+    navigation.navigate('HomeScreen');
   };
 
   return (
@@ -83,12 +85,6 @@ const styles = StyleSheet.create({
   keyboardAwareScrollView: {
     flex: 1,
     marginLeft: 5,
-  },
-  image: {
-    marginTop: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 125,
   },
   container: {
     flex: 1,
