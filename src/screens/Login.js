@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Constants from '../assets/Colors/Constants';
 
 const Login = props => {
   const navigation = useNavigation();
@@ -88,26 +89,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
+    backgroundColor: Constants.baseColor,
     borderWidth: 1.5,
     borderColor: '#C4C4C4',
-    marginTop: 30,
-    paddingTop: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
-  },
-  mainView: {
-    marginBottom: 30,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginRight: 200,
-  },
-  mainViewText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#989494',
   },
   inputView: {
     backgroundColor: '#FFFFFF',
@@ -147,12 +133,12 @@ const styles = StyleSheet.create({
   secondTouchableOpacity: {
     alignItems: 'center',
     fontWeight: 'bold',
-    color: '#000000',
+    color: Constants.secondaryColor,
     marginLeft: 70,
     marginTop: 20,
   },
   onPressText: {
-    color: '#000000',
+    color: Constants.secondaryColor,
     fontWeight: 'bold',
     textAlign: 'center',
   },

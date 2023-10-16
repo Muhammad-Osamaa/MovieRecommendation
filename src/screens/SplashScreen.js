@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, Image, Animated, Easing} from 'react-native';
+import Constants from '../assets/Colors/Constants';
 
 const SplashScreen = ({navigation}) => {
   const fadeInAnim = useRef(new Animated.Value(0)).current;
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#222222',
+    backgroundColor: Constants.baseColor,
   },
   main: {
     flex: 1,
