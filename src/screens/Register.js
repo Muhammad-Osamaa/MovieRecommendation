@@ -1,189 +1,219 @@
-import React, {useState} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet,
-  TextInput,
-  Image,
   View,
   Text,
+  StyleSheet,
+  Button,
+  TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {Picker} from '@react-native-picker/picker';
+import {databases, DATABASE_ID, COLLECTION_ID_USERS} from '../../Appwrite'; // Assuming you have imported the necessary Appwrite modules
 
-const Register = (props) => {
-  const navigation = useNavigation();
+const RegisterScreen = ({navigation}) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
+  const [userType, setUserType] = useState('student');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const handleRegister = () => {
-    navigation.navigate('Login');
+  // const handleCityChange = value => {
+  //   setSelectedCity(value);
+  // };
+
+  // const handleCitySearch = text => {
+  //   const filtered = citiesData.filter(city =>
+  //     city.name.toLowerCase().includes(text.toLowerCase()),
+  //   );
+  //   setFilteredCities(filtered);
+  // };
+
+  // useEffect(() => {
+  //   setFilteredCities(citiesData);
+  // }, []);
+
+  const CustomButton = ({title, onPress}) => {
+    return (
+      <TouchableOpacity style={styles.rgbutton} onPress={onPress}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    );
   };
-  const togglePasswordVisiblity = () => {
-    setPasswordVisible(!passwordVisible);
+
+  const CustomButtonTwo = ({title, onPress}) => {
+    return (
+      <TouchableOpacity style={styles.rgbutton} onPress={onPress}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    );
   };
+
+  const registerUser = async (name, email, password) => {
+    try {
+      // Assuming databases.createDocuments is an asynchronous function to create a user document in your database
+      console.log('log1' + email, password, name, DATABASE_ID, COLLECTION_ID_USERS);
+      const querySnapshot = await databases.createDocument(
+        DATABASE_ID,
+        COLLECTION_ID_USERS,
+        'unique()',
+        {
+          name: name,
+          email: email,
+          password: password,
+          // "userType": userType
+        },
+      );
+
+      // Check if the user document was created successfully
+      if (querySnapshot.total === 0) {
+        console.log('No user found with this email and password');
+        return;
+      } else {
+        // Assuming you want to navigate to the 'Login' screen
+        // You should replace 'navigation.navigate' with your actual navigation logic
+        navigation.navigate('HomeScreen');
+        setIsRejistered(false);
+      }
+    } catch (error) {
+      console.error('Error registering user:', error);
+      throw error;
+    }
+  };
+
+  let [isRegistred, setIsRejistered] = useState(true);
+
   return (
-    <View style={styles.container}>
-      <KeyboardAwareScrollView style={styles.keyboardAwareScrollView}>
-        <View style={styles.mainView}>
-          <Text style={styles.registerText}>Register</Text>
-        </View>
+    <>
+      {isRegistred ? (
+        <View style={styles.container}>
+          <Text style={styles.title}>Sign Up</Text>
+          <Text style={styles.subtitle}>Create a new account</Text>
 
-        <View style={styles.inputView}>
           <TextInput
-            style={styles.TextInput}
+            style={styles.input}
+            placeholder="Full name"
+            value={name}
+            onChangeText={text => setName(text)}
+          />
+
+          <TextInput
+            style={styles.input}
             placeholder="Email"
-            placeholderTextColor="#C4C4C4"
-            onChangeText={email => setEmail(email)}
+            value={email}
+            onChangeText={text => setEmail(text)}
           />
-        </View>
-        <View style={styles.inputView}>
           <TextInput
-            style={styles.TextInput}
-            placeholder="Username"
-            placeholderTextColor="#C4C4C4"
-            onChangeText={username => setUsername(username)}
-          />
-        </View>
-
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.TextInput}
+            style={styles.input}
             placeholder="Password"
-            placeholderTextColor="#C4C4C4"
-            secureTextEntry={!passwordVisible}
-            onChangeText={password => setPassword(password)}
+            type="password"
+            value={password}
+            onChangeText={text => setPassword(text)}
           />
-          <TouchableOpacity
-            style={styles.eyeIcon}
-            onPress={togglePasswordVisiblity}>
-            <Image
-              source={
-                passwordVisible
-                  ? require('../assets/images/eyeOpen.png')
-                  : require('../assets/images/eyeClosed.png')
-              }
-              style={styles.eyeIconImage}
-            />
-          </TouchableOpacity>
-        </View>
+          <CustomButton
+            title="Create Account"
+            onPress={() => registerUser(name, email, password)}
+          />
 
-        <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
-          <Text style={styles.onPressText}>Register</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
-          <Text style={styles.touchableOpacityText}>
-            Already have an account?
+          <Text style={styles.subtitleTwo}>
+            Already have an account?{' '}
+            <Text
+              onPress={() => navigation.navigate('Login')}
+              style={styles.lgbutton}>
+              {' '}
+              Login
+            </Text>
           </Text>
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableOpacity>
-      </KeyboardAwareScrollView>
-    </View>
+        </View>
+      ) : (
+        <>
+          <View style={styles.container}>
+            <Text style={styles.subtitle}>
+              You Account is successfully created{' '}
+            </Text>
+
+            <CustomButtonTwo
+              title="Go to login"
+              onPress={() => navigation.navigate('Login')}
+            />
+            <Text style={styles.subtitleTwo}>
+              Organization Account needs admin approval
+            </Text>
+          </View>
+        </>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  keyboardAwareScrollView: {
-    flex: 1,
-    marginLeft: 5,
-  },
-  mainView: {
-    marginBottom: 30,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginRight: 170,
-  },
-  registerText: {
-    justifyContent: 'center',
-    fontSize: 30,
-    color: '#989494',
-    fontWeight: 'bold',
+  pickerContainer: {
+    width: '80%',
+    height: 40,
+    paddingBottom: 50,
+    borderColor: 'gray',
+    borderWidth: 2,
     marginBottom: 10,
+    borderRadius: 20,
+    overflow: 'hidden', // This is important to prevent the border from being cut off
   },
-  onPressText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    padding: 10,
-  },
-  touchableOpacityText: {
-    alignItems: 'center',
-    fontWeight: 'bold',
-    color: '#000000',
-    marginTop: 20,
-    marginLeft: 60,
-  },
+
   container: {
     flex: 1,
-    backgroundColor: '#F4F4F4',
-    alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1.5,
-    borderColor: '#C4C4C4',
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
-    marginTop: 30,
-  },
-  image: {
-    marginTop: 60,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 125,
+    backgroundColor: '#fff',
   },
-  loginText: {
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#000000',
-    textAlign: 'center',
   },
-
-  inputView: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    width: '100%',
-    height: 50,
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 20,
     marginTop: 10,
-    alignItems: 'flex-start',
-    borderColor: '#C4C4C4',
-    borderWidth: 1,
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+  },
+  input: {
+    width: '80%',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 2,
+    marginBottom: 10,
+    padding: 5,
+    paddingLeft: 10,
+    borderRadius: 20,
+  },
+  picker: {
+    width: '100%',
+    paddingBottom: 5,
+    paddingLeft: 5,
+  },
+  rgbutton: {
+    width: '80%',
+    height: 40,
+    marginBottom: 10,
+    marginTop: 10,
+    padding: 5,
+    backgroundColor: '#FD724B',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 20,
-  },
-  eyeIcon: {
-    position: 'absolute',
-    top: 13,
-    right: 15,
-    height: 24,
-    width: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eyeIconImage: {
-    height: 28,
-    width: 36,
-    padding: -15,
-    backgroundColor: '#FFFFFF',
-  },
-  registerBtn: {
-    width: '100%',
-    borderRadius: 10,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 30,
-    backgroundColor: '#989494',
-    color: '#000000',
-  },
-  login_button: {
-    height: 30,
-    alignItems: 'center',
+  lgbutton: {
+    color: '#FD724B',
     fontWeight: 'bold',
-    color: '#000000',
-    marginTop: 5,
+  },
+  subtitleTwo: {
+    fontSize: 16,
+    marginTop: 20,
+    fontFamily: 'Roboto',
   },
 });
-export default Register;
+
+export default RegisterScreen;
