@@ -7,6 +7,7 @@ import Register from '../screens/Register';
 import HomeScreen from '../screens/HomeScreen';
 import Constants from '../assets/Colors/Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SearchBar from '../components/SearchBar';
 
 const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
@@ -33,6 +34,11 @@ const RootNavigator = () => {
           component={HomeScreen}
           options={headerStyle}
         />
+        <Stack.Screen
+          name="SearchBar"
+          component={SearchBar}
+          options={headerStyle}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -42,6 +48,5 @@ const headerStyle = {
   headerStyle: {backgroundColor: Constants.baseColor},
   headerTitleStyle: {color: Constants.textColor},
   headerLeft: () => <Icon name="menu" size={34} color={Constants.textColor} />,
-  
 };
 export default RootNavigator;
