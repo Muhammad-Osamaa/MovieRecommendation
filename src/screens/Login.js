@@ -100,14 +100,6 @@ const LoginScreen = ({navigation}) => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-
-      <View style={styles.forgetPasswordContainer}>
-        <Text
-          style={styles.forgetPasswordText}
-          onPress={() => navigation.navigate('ResetP')}>
-          Forget password
-        </Text>
-      </View>
       <CustomButton
         title="Sign In"
         onPress={() => loginUser(email, password)}

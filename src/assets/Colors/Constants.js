@@ -1,6 +1,7 @@
 const Constants = {
   textColor: '#fff',
-  baseColor: '#151C26',
+  baseColor: '#000000',
+  logoColor: '#831010',
   fadedColor: '#969696',
   secondaryColor: '#F4C10F',
 };

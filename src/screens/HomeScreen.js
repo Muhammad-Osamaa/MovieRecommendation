@@ -15,9 +15,13 @@
 // export default HomeScreen;
 // MovieSearchScreen.js
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, Button, FlatList} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DiscoverMovies from '../components/DiscoverMovies';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Constants from '../assets/Colors/Constants';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const API_KEY = '125ffb0958a93add2e78c6b803f41ab9';
 const BASE_URL = 'https://api.themoviedb.org/3/search/movie';
@@ -56,7 +60,7 @@ function HomeScreen() {
       const response = await axios.get(
         `${BASE_URL}?api_key=${API_KEY}&query=${query}`,
       );
-      console.log(response.data)
+      console.log(response.data);
       setResults(response.data.results);
     } catch (error) {
       console.error('Error searching for movies:', error);
@@ -71,14 +75,26 @@ function HomeScreen() {
   };
 
   return (
-    <View>
-      <Text>Search for Movies</Text>
-      <TextInput
-        placeholder="Enter a movie title"
-        value={query}
-        onChangeText={setQuery}
-      />
-      <Button title="Search" onPress={searchMovies} />
+    <View style={{flex: 1}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          backgroundColor: Constants.baseColor,
+        }}>
+        <TextInput
+          placeholder="Search Here"
+          placeholderTextColor={Constants.textColor}
+          value={query}
+          onChangeText={setQuery}
+          color={Constants.textColor}
+        />
+        <TouchableOpacity onPress={searchMovies}>
+          <Icon name="search" size={20} color={Constants.textColor} />
+        </TouchableOpacity>
+      </View>
+      <DiscoverMovies />
       <FlatList
         data={results}
         keyExtractor={item => item.id.toString()}
@@ -89,10 +105,10 @@ function HomeScreen() {
           </View>
         )}
       />
-      <Text>Movie Categories:</Text>
+      {/* <Text style={{color: 'red', fontWeight: 'bold'}}>Movie Categories:</Text>
       {categories.map((category, index) => (
         <Text key={index}>{category}</Text>
-      ))}
+      ))} */}
     </View>
   );
 }

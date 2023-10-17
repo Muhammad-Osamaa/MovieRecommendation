@@ -71,14 +71,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
-    width: 350,
-    height: 500,
-  },
   text: {
-    fontSize: 14,
+    fontSize: 22,
     fontStyle: 'italic',
-    color: '#FAF3F0',
+    color: Constants.logoColor,
     fontFamily: 'sans-serif-condensed',
     fontWeight: 'bold',
   },

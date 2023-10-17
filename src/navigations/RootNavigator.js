@@ -42,8 +42,6 @@ const headerStyle = {
   headerStyle: {backgroundColor: Constants.baseColor},
   headerTitleStyle: {color: Constants.textColor},
   headerLeft: () => <Icon name="menu" size={34} color={Constants.textColor} />,
-  headerRight: () => (
-    <Icon name="search" size={25} color={Constants.textColor} />
-  ),
+  
 };
 export default RootNavigator;
