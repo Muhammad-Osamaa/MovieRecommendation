@@ -5,7 +5,7 @@ import Constants from '../assets/Colors/Constants';
 const SplashScreen = ({navigation}) => {
   const fadeInAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const bounceAnim = useRef(new Animated.Value(0.8)).current;
 
   useEffect(() => {
     const animationDuration = 1000;
@@ -24,18 +24,17 @@ const SplashScreen = ({navigation}) => {
       easing: easingFunction,
       useNativeDriver: true,
     });
-
-    const rotateAnimation = Animated.timing(rotateAnim, {
-      toValue: 360,
-      duration: animationDuration,
-      easing: Easing.elastic(2),
+    const bounceAnimation = Animated.spring(bounceAnim, {
+      toValue: 1,
+      friction: 1,
+      tension: 20,
       useNativeDriver: true,
     });
 
     Animated.parallel([
       fadeInAnimation,
       scaleAnimation,
-      rotateAnimation,
+      bounceAnimation,
     ]).start();
 
     const delay = 2000;
@@ -46,18 +45,7 @@ const SplashScreen = ({navigation}) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [navigation, fadeInAnim, scaleAnim, rotateAnim]);
-
-  const rotateStyle = {
-    transform: [
-      {
-        rotate: rotateAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '360deg'],
-        }),
-      },
-    ],
-  };
+  }, [navigation, fadeInAnim, scaleAnim, bounceAnim]);
 
   return (
     <View style={styles.container}>
@@ -66,7 +54,10 @@ const SplashScreen = ({navigation}) => {
           styles.main,
           {opacity: fadeInAnim, transform: [{scale: scaleAnim}]},
         ]}>
-        <Text style={styles.text}>Movie Recommendation</Text>
+        <Animated.Text
+          style={[styles.text, {transform: [{scale: bounceAnim}]}]}>
+          Movie Recommendation
+        </Animated.Text>
       </Animated.View>
     </View>
   );
