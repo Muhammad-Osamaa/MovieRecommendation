@@ -51,7 +51,7 @@ const SplashScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.main, {opacity: fadeInAnim}, rotateStyle]}>
-        <Text style={styles.text}>Movie App</Text>
+        <Text style={styles.text}>Movie Recommendation</Text>
       </Animated.View>
     </View>
   );
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 22,
+    fontSize: 26,
     fontStyle: 'italic',
     color: Constants.logoColor,
     fontFamily: 'sans-serif-condensed',

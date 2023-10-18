@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
 import {SliderBox} from 'react-native-image-slider-box';
 import {IMAGE_POSTER_URL} from '../configs/tmdbConfig';
 import Constants from '../assets/Colors/Constants';
@@ -8,6 +15,8 @@ import Card from './card';
 const DiscoverMovies = () => {
   const [movies, setMovies] = useState([]);
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const {width, height} = Dimensions.get('window');
 
   const getMovies = async () => {
     try {
@@ -26,8 +35,10 @@ const DiscoverMovies = () => {
       }));
       setImages(images);
       setMovies(data.results);
+      setLoading(false);
     } catch (error) {
       console.error('ErrorImages:', error);
+      setLoading(false);
     }
   };
   const getDiscoverMovies = async () => {
@@ -45,8 +56,10 @@ const DiscoverMovies = () => {
         title: movie.title,
       }));
       setMovies(movie);
+      setLoading(false);
     } catch (error) {
       console.error('ErrorMovies:', error);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -55,24 +68,35 @@ const DiscoverMovies = () => {
   useEffect(() => {
     getDiscoverMovies();
   }, []);
+
   return (
     <View style={styles.container}>
       <SliderBox
         images={images.map(image => image.poster)}
         dotColor={Constants.secondaryColor}
+        sliderBoxHeight={height * 0.5}
+        paginationBoxStyle={{position: 'absolute', bottom: 0}}
       />
-      <FlatList
-        data={movies}
-        horizontal
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => <Card movie={item} />}
-      />
+      <Text
+        style={{
+          fontSize: 16,
+          color: Constants.baseColor,
+          padding: 5,
+          fontWeight: 'bold',
+        }}>
+        Recommended Movies
+      </Text>
+      {loading ? (
+        <ActivityIndicator size="large" color={Constants.logoColor} />
+      ) : (
+        <FlatList
+          data={movies}
+          horizontal
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => <Card movie={item} />}
+        />
+      )}
     </View>
-
-    // <View>
-    //   <SliderBox images={images} dotColor={Constants.secondaryColor} />
-    //   <ScrollView movies={movies} />
-    // </View>
   );
 };
 

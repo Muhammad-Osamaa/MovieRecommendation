@@ -3,34 +3,17 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {Picker} from '@react-native-picker/picker';
 import {databases, DATABASE_ID, COLLECTION_ID_USERS} from '../../Appwrite'; // Assuming you have imported the necessary Appwrite modules
+import Constants from '../assets/Colors/Constants';
 
 const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [userType, setUserType] = useState('student');
   const [password, setPassword] = useState('');
-
-  // const handleCityChange = value => {
-  //   setSelectedCity(value);
-  // };
-
-  // const handleCitySearch = text => {
-  //   const filtered = citiesData.filter(city =>
-  //     city.name.toLowerCase().includes(text.toLowerCase()),
-  //   );
-  //   setFilteredCities(filtered);
-  // };
-
-  // useEffect(() => {
-  //   setFilteredCities(citiesData);
-  // }, []);
+  let [isRegistred, setIsRejistered] = useState(true);
 
   const CustomButton = ({title, onPress}) => {
     return (
@@ -39,19 +22,16 @@ const RegisterScreen = ({navigation}) => {
       </TouchableOpacity>
     );
   };
-
-  const CustomButtonTwo = ({title, onPress}) => {
-    return (
-      <TouchableOpacity style={styles.rgbutton} onPress={onPress}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
-    );
-  };
-
   const registerUser = async (name, email, password) => {
     try {
       // Assuming databases.createDocuments is an asynchronous function to create a user document in your database
-      console.log('log1' + email, password, name, DATABASE_ID, COLLECTION_ID_USERS);
+      console.log(
+        'log1' + email,
+        password,
+        name,
+        DATABASE_ID,
+        COLLECTION_ID_USERS,
+      );
       const querySnapshot = await databases.createDocument(
         DATABASE_ID,
         COLLECTION_ID_USERS,
@@ -69,9 +49,6 @@ const RegisterScreen = ({navigation}) => {
         console.log('No user found with this email and password');
         return;
       } else {
-        // Assuming you want to navigate to the 'Login' screen
-        // You should replace 'navigation.navigate' with your actual navigation logic
-        navigation.navigate('HomeScreen');
         setIsRejistered(false);
       }
     } catch (error) {
@@ -79,9 +56,9 @@ const RegisterScreen = ({navigation}) => {
       throw error;
     }
   };
-
-  let [isRegistred, setIsRejistered] = useState(true);
-
+  const goToLogin = () => {
+    navigation.navigate('Login');
+  };
   return (
     <>
       {isRegistred ? (
@@ -105,7 +82,7 @@ const RegisterScreen = ({navigation}) => {
           <TextInput
             style={styles.input}
             placeholder="Password"
-            type="password"
+            secureTextEntry={true}
             value={password}
             onChangeText={text => setPassword(text)}
           />
@@ -116,9 +93,7 @@ const RegisterScreen = ({navigation}) => {
 
           <Text style={styles.subtitleTwo}>
             Already have an account?{' '}
-            <Text
-              onPress={() => navigation.navigate('Login')}
-              style={styles.lgbutton}>
+            <Text onPress={goToLogin} style={styles.lgbutton}>
               {' '}
               Login
             </Text>
@@ -131,13 +106,7 @@ const RegisterScreen = ({navigation}) => {
               You Account is successfully created{' '}
             </Text>
 
-            <CustomButtonTwo
-              title="Go to login"
-              onPress={() => navigation.navigate('Login')}
-            />
-            <Text style={styles.subtitleTwo}>
-              Organization Account needs admin approval
-            </Text>
+            <CustomButton title="Go to login" onPress={goToLogin} />
           </View>
         </>
       )}
@@ -146,26 +115,16 @@ const RegisterScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  pickerContainer: {
-    width: '80%',
-    height: 40,
-    paddingBottom: 50,
-    borderColor: 'gray',
-    borderWidth: 2,
-    marginBottom: 10,
-    borderRadius: 20,
-    overflow: 'hidden', // This is important to prevent the border from being cut off
-  },
-
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Constants.baseColor,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: Constants.logoColor,
   },
   subtitle: {
     fontSize: 16,
@@ -173,32 +132,29 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'Roboto',
     fontWeight: 'bold',
+    color: Constants.logoColor,
   },
   input: {
     width: '80%',
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: Constants.logoColor,
     borderWidth: 2,
     marginBottom: 10,
     padding: 5,
     paddingLeft: 10,
-    borderRadius: 20,
-  },
-  picker: {
-    width: '100%',
-    paddingBottom: 5,
-    paddingLeft: 5,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
   },
   rgbutton: {
     width: '80%',
-    height: 40,
+    height: 50,
     marginBottom: 10,
     marginTop: 10,
     padding: 5,
-    backgroundColor: '#FD724B',
+    backgroundColor: '#0802A3',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
   },
   buttonText: {
     color: 'white',
@@ -206,13 +162,14 @@ const styles = StyleSheet.create({
   },
 
   lgbutton: {
-    color: '#FD724B',
+    color: Constants.logoColor,
     fontWeight: 'bold',
   },
   subtitleTwo: {
     fontSize: 16,
     marginTop: 20,
     fontFamily: 'Roboto',
+    color: '#C7EEFF',
   },
 });
 

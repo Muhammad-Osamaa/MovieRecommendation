@@ -1,24 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   TouchableOpacity,
+  Image,
 } from 'react-native';
-import {databases, DATABASE_ID, COLLECTION_ID_USERS} from '../../Appwrite'; // Assuming you have imported the necessary Appwrite modules
+import {databases, DATABASE_ID, COLLECTION_ID_USERS} from '../../Appwrite';
 import {Query} from 'appwrite';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Modal from 'react-native-modal';
+import Constants from '../assets/Colors/Constants';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let [user, setUser] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  // Function to log in a user
-  const loginUser = async (email, password) => {
+  const loginUser = async () => {
     try {
       const querySnapshot = await databases.listDocuments(
         DATABASE_ID,
@@ -26,16 +24,18 @@ const LoginScreen = ({navigation}) => {
         [Query.equal('email', email), Query.equal('password', password)],
       );
 
-      if (querySnapshot.total == 0) {
-        console.log('No user found with tis email and password');
+      if (querySnapshot.total === 0) {
+        console.log('No user found with this email and password');
         return;
-      } else {
-        // Assuming there is only one matching document, you can access it like this:
-        const document = querySnapshot.documents;
-        console.log('Match found: ', document);
-        if (document[0].name) {
-          navigation.navigate('HomeScreen');
-        }
+      }
+
+      const document = querySnapshot.documents[0];
+      console.log('Match found: ', document);
+
+      if (document.name) {
+        setEmail('');
+        setPassword('');
+        navigation.navigate('HomeScreen');
       }
     } catch (error) {
       console.error('Error logging in:', error);
@@ -43,74 +43,60 @@ const LoginScreen = ({navigation}) => {
     }
   };
 
-  // Call the loginUser function with user's email and password
-
-  const CustomButton = ({title, onPress}) => {
-    return (
-      <TouchableOpacity style={styles.rgbutton} onPress={onPress}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  // modal related fields
-
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
     <View style={styles.container}>
-      <Modal
-        isVisible={isModalVisible}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        onBackdropPress={toggleModal}
-        onBackButtonPress={toggleModal}
-        backdropOpacity={0.5}>
-        <View style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
-          {/* Close icon in the top-right corner */}
-          <TouchableOpacity
-            style={{position: 'absolute', top: 10, right: 10}}
-            onPress={toggleModal}>
-            <Text style={{fontSize: 24}}>✕</Text>
-          </TouchableOpacity>
-
-          {/* "Not Approved" message */}
-          <Text style={{fontSize: 18}}>Your account is not approved.</Text>
-        </View>
-      </Modal>
-
       <Text style={styles.title}>Sign in</Text>
       <Text style={styles.subtitle}>Login to your account</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={text => setEmail(text)}
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry={true} // or secureTextEntry
-        value={password}
-        onChangeText={text => setPassword(text)}
-      />
-      <CustomButton
-        title="Sign In"
-        onPress={() => loginUser(email, password)}
-      />
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          placeholderTextColor="#333" // Darken the placeholder text color
+          value={email}
+          onChangeText={text => setEmail(text)}
+          accessibilityLabel="Email"
+          accessibilityHint="Enter your email address"
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#333" // Darken the placeholder text color
+          secureTextEntry={!passwordVisible}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          accessibilityLabel="Password"
+          accessibilityHint="Enter your password"
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={togglePasswordVisibility}>
+          <Image
+            source={
+              passwordVisible
+                ? require('../assets/images/eyeOpen.png')
+                : require('../assets/images/eyeClosed.png')
+            }
+            style={styles.eyeIconImage}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={loginUser}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.subtitleTwo}>
-        If you don't have an account?{' '}
+        If you don't have an account?
         <Text
           onPress={() => navigation.navigate('Register')}
-          style={styles.lgbutton}>
-          {' '}
+          style={styles.registerButton}>
           Register
         </Text>
       </Text>
@@ -119,86 +105,83 @@ const LoginScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  pickerContainer: {
-    width: '80%',
-    height: 40,
-    paddingBottom: 50,
-    borderColor: 'gray',
-    borderWidth: 2,
-    marginBottom: 10,
-    borderRadius: 20,
-    overflow: 'hidden', // This is important to prevent the border from being cut off
-  },
-  forgetPasswordContainer: {
-    alignSelf: 'flex-end', // Align to the right side
-    marginRight: 45, // Add some spacing from the right
-  },
-  forgetPasswordText: {
-    textAlign: 'right', // Align text to the right
-    color: '#FD724B',
-    fontWeight: 'bold',
-    // Other styling properties for the text
-  },
-
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: Constants.baseColor,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: Constants.logoColor,
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 20,
     marginTop: 10,
-    fontFamily: 'Roboto',
     fontWeight: 'bold',
+    fontFamily: 'Roboto',
+    color: Constants.logoColor,
   },
-  input: {
+  inputView: {
+    backgroundColor: '#FFFFFF',
     width: '80%',
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 2,
-    marginBottom: 10,
-    padding: 5,
-    paddingLeft: 10,
-    borderRadius: 20,
+    height: 50,
+    marginTop: 10,
+    borderColor: Constants.logoColor,
+    borderWidth: 1,
+    borderRadius: 10,
   },
-  picker: {
-    width: '100%',
-    paddingBottom: 5,
-    paddingLeft: 5,
+  eyeIcon: {
+    position: 'absolute',
+    top: 13,
+    right: 15,
+    height: 20,
+    width: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  rgbutton: {
+  eyeIconImage: {
+    height: 24,
+    width: 36,
+    padding: -15,
+    backgroundColor: '#C7EEFF',
+  },
+  buttonContainer: {
+    backgroundColor: '#0802A3',
     width: '80%',
-    height: 40,
+    height: 50,
     marginBottom: 10,
     marginTop: 10,
-    padding: 5,
-    backgroundColor: '#FD724B',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
+    padding: 5,
+  },
+  button: {
+    width: '99%',
+    height: 50,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: Constants.textColor,
     fontWeight: 'bold',
-  },
-
-  lgbutton: {
-    color: '#FD724B',
-    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 18,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   subtitleTwo: {
     fontSize: 16,
     marginTop: 20,
-    fontFamily: 'Roboto',
+    color: '#C7EEFF',
   },
-  forgetpassword: {
-    textAlign: 'right',
+  registerButton: {
+    color: Constants.logoColor,
+    fontWeight: 'bold',
   },
 });
 

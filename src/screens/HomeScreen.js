@@ -1,37 +1,25 @@
-// import React from 'react';
-// import {Text, View} from 'react-native';
-// import DiscoverMovies from '../components/DiscoverMovies';
-// import Styles from '../components/Styles';
-// import TrendingPeople from '../components/TrendingPeople';
-
-// const HomeScreen = () => {
-//   return (
-//     <View style={Styles.sectionBg}>
-//       <DiscoverMovies />
-//       {/* <TrendingPeople /> */}
-//     </View>
-//   );
-// };
-// export default HomeScreen;
-// MovieSearchScreen.js
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DiscoverMovies from '../components/DiscoverMovies';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Constants from '../assets/Colors/Constants';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from '../assets/Colors';
 import {useNavigation} from '@react-navigation/native';
-import SearchBar from '../components/SearchBar';
-
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const API_KEY = '125ffb0958a93add2e78c6b803f41ab9';
 const BASE_URL = 'https://api.themoviedb.org/3/search/movie';
 
 function HomeScreen() {
   const navigation = useNavigation();
   const [query, setQuery] = useState('');
-
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -63,36 +51,58 @@ function HomeScreen() {
       saveCategoriesToStorage();
     }
   };
+  const handleSearch = () => {
+    navigation.navigate('SearchBar', {query});
+    setQuery('');
+  };
 
   return (
-    <View style={{flex: 1}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          backgroundColor: Constants.baseColor,
-        }}>
-        <TextInput
-          placeholder="Search Here"
-          placeholderTextColor={Constants.textColor}
-          value={query}
-          onChangeText={setQuery}
-          color={Constants.textColor}
-        />
-        <TouchableOpacity
-          onPress={() => navigation.navigate('SearchBar', {query})}>
-          <Icon name="search" size={20} color={Constants.textColor} />
-        </TouchableOpacity>
-      </View>
-      <DiscoverMovies />
+    <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
+      <View style={styles.container}>
+        <View style={styles.searchContainer}>
+          <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
+            <Icon
+              name="search"
+              size={20}
+              color={Constants.textColor}
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
 
-      <Text style={{color: 'red', fontWeight: 'bold'}}>Movie Categories:</Text>
-      {categories.map((category, index) => (
-        <Text key={index}>{category}</Text>
-      ))}
-    </View>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search Here"
+            placeholderTextColor={Constants.textColor}
+            value={query}
+            onChangeText={setQuery}
+            color={Constants.textColor}
+          />
+        </View>
+        <DiscoverMovies />
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Constants.baseColor,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderColor: Constants.borderColor,
+  },
+  searchInput: {
+    flex: 1,
+    paddingRight: 10,
+    color: Constants.textColor,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+});
 
 export default HomeScreen;
