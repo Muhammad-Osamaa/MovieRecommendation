@@ -6,15 +6,13 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const Card = ({movie}) => {
   return (
     <View style={styles.cardContainer}>
-      <KeyboardAwareScrollView style={styles.KeyboardAwareScrollView}>
-        <Image
-          style={styles.poster}
-          source={{uri: `${IMAGE_POSTER_URL}${movie.poster_path}`}}
-        />
-        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-          {movie.title}
-        </Text>
-      </KeyboardAwareScrollView>
+      <Image
+        style={styles.poster}
+        source={{uri: `${IMAGE_POSTER_URL}${movie.poster_path}`}}
+      />
+      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+        {movie.title}
+      </Text>
     </View>
   );
 };
@@ -22,10 +20,6 @@ const cardWidth = 150;
 const cardHeight = 240;
 
 const styles = StyleSheet.create({
-  KeyboardAwareScrollView:{
-    flex: 1,
-    marginLeft: 5,
-  },
   cardContainer: {
     width: cardWidth,
     height: cardHeight,
