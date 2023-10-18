@@ -1,33 +1,44 @@
 import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, Image, Animated, Easing} from 'react-native';
+import {View, Text, StyleSheet, Animated, Easing} from 'react-native';
 import Constants from '../assets/Colors/Constants';
 
 const SplashScreen = ({navigation}) => {
   const fadeInAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(1)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
-    const delay = 2000;
+    const animationDuration = 1000;
+    const easingFunction = Easing.inOut(Easing.ease);
+
+    const fadeInAnimation = Animated.timing(fadeInAnim, {
+      toValue: 1,
+      duration: animationDuration,
+      easing: easingFunction,
+      useNativeDriver: true,
+    });
+
+    const scaleAnimation = Animated.timing(scaleAnim, {
+      toValue: 1.2,
+      duration: animationDuration,
+      easing: easingFunction,
+      useNativeDriver: true,
+    });
+
+    const rotateAnimation = Animated.timing(rotateAnim, {
+      toValue: 360,
+      duration: animationDuration,
+      easing: Easing.elastic(2),
+      useNativeDriver: true,
+    });
 
     Animated.parallel([
-      Animated.timing(fadeInAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(scaleAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-        easing: Easing.elastic(2),
-      }),
-      Animated.timing(rotateAnim, {
-        toValue: 360,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
+      fadeInAnimation,
+      scaleAnimation,
+      rotateAnimation,
     ]).start();
 
+    const delay = 2000;
     const timer = setTimeout(() => {
       navigation.navigate('Login');
     }, delay);
@@ -39,18 +50,22 @@ const SplashScreen = ({navigation}) => {
 
   const rotateStyle = {
     transform: [
-      {scale: scaleAnim},
       {
         rotate: rotateAnim.interpolate({
-          inputRange: [0, 360],
+          inputRange: [0, 1],
           outputRange: ['0deg', '360deg'],
         }),
       },
     ],
   };
+
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.main, {opacity: fadeInAnim}, rotateStyle]}>
+      <Animated.View
+        style={[
+          styles.main,
+          {opacity: fadeInAnim, transform: [{scale: scaleAnim}]},
+        ]}>
         <Text style={styles.text}>Movie Recommendation</Text>
       </Animated.View>
     </View>
@@ -59,15 +74,17 @@ const SplashScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    flex: 1,
     backgroundColor: Constants.baseColor,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   main: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },

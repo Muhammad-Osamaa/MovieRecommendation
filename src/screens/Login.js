@@ -162,16 +162,15 @@ const styles = StyleSheet.create({
   button: {
     width: '99%',
     height: 50,
-    marginBottom: 10,
+    paddingBottom: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
     color: Constants.textColor,
     fontWeight: 'bold',
-    textAlign: 'center',
     fontSize: 18,
-    justifyContent: 'center',
+    
     alignSelf: 'center',
   },
   subtitleTwo: {
