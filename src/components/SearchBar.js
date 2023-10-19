@@ -58,7 +58,7 @@ const SearchBar = ({route}) => {
           <Ionicons
             name="arrow-back-sharp"
             size={24}
-            color={Constants.fadedColor}
+            color={Constants.logoColor}
           />
           <Text style={styles.heading}>Search Results</Text>
         </TouchableOpacity>
@@ -104,9 +104,10 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   heading: {
-    color: Constants.fadedColor,
+    color: Constants.logoColor,
     fontSize: 22,
     marginLeft: 16,
+    fontWeight:'bold'
   },
   resultItem: {
     marginBottom: 20,
@@ -115,15 +116,16 @@ const styles = StyleSheet.create({
     width: width - 32,
     height: (width - 32) * 1.5,
     borderRadius: 8,
+    marginTop:10,
   },
   title: {
     fontSize: 18,
-    color: Constants.baseColor,
+    color: Constants.textColor,
     marginTop: 8,
     fontWeight: 'bold',
   },
   releaseDate: {
-    color: Constants.baseColor,
+    color: Constants.textColor,
     fontWeight: '600',
   },
   iconContainer: {

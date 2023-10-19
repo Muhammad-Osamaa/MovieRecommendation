@@ -70,7 +70,7 @@ const DiscoverMovies = () => {
     <View style={styles.container}>
       <SliderBox
         images={images.map(image => image.poster)}
-        dotColor={Constants.secondaryColor}
+        dotColor={Constants.logoColor}
         sliderBoxHeight={height * 0.5}
         paginationBoxStyle={{position: 'absolute', bottom: 0}}
       />
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: Constants.textColor,
+    color: Constants.logoColor,
     padding: 5,
     fontWeight: 'bold',
   },

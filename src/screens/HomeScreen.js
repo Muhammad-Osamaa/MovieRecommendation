@@ -64,7 +64,7 @@ function HomeScreen() {
             <Icon
               name="search"
               size={20}
-              color={Constants.textColor}
+              color={Constants.logoColor}
               style={styles.searchIcon}
             />
           </TouchableOpacity>
@@ -72,11 +72,12 @@ function HomeScreen() {
           <TextInput
             style={styles.searchInput}
             placeholder="Search Here"
-            placeholderTextColor={Constants.textColor}
+            placeholderTextColor={Constants.logoColor}
             value={query}
             onChangeText={setQuery}
             color={Constants.textColor}
           />
+          <Text style={styles.header}>Movies</Text>
         </View>
         <DiscoverMovies />
       </View>
@@ -86,12 +87,17 @@ function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Constants.baseColor,
+  },
+  header: {
+    flex: 2,
+    color: Constants.logoColor,
+    fontSize: 22,
+    fontWeight: 'bold',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Constants.baseColor,
-    paddingHorizontal: 10,
     borderBottomWidth: 1,
     borderColor: Constants.borderColor,
   },
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
     color: Constants.textColor,
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 5,
   },
 });
 

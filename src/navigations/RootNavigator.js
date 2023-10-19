@@ -32,21 +32,15 @@ const RootNavigator = () => {
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
-          options={headerStyle}
+          options={{headerShown: false}}
         />
         <Stack.Screen
           name="SearchBar"
           component={SearchBar}
-          options={headerStyle}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-const headerStyle = {
-  title: 'Movies',
-  headerStyle: {backgroundColor: Constants.baseColor},
-  headerTitleStyle: {color: Constants.textColor},
-  headerLeft: () => <Icon name="menu" size={34} color={Constants.textColor} />,
 };
 export default RootNavigator;

@@ -4,7 +4,7 @@ import {IMAGE_POSTER_URL} from '../configs/tmdbConfig';
 import Constants from '../assets/Colors/Constants';
 
 const Card = ({movie}) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -13,7 +13,7 @@ const Card = ({movie}) => {
     <View style={styles.cardContainer}>
       {loading && (
         <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={Constants.textColor} />
+          <ActivityIndicator size="large" color={Constants.baseColor} />
         </View>
       )}
       <Image
@@ -41,20 +41,19 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: Constants.textColor,
     position: 'relative',
   },
   poster: {
     width: cardWidth - 20,
     height: cardHeight - 50,
     borderRadius: 8,
+    borderColor: Constants.logoColor,
   },
   title: {
-    marginTop: 5,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     maxWidth: cardWidth - 20,
-    color: Constants.baseColor,
+    color: Constants.textColor,
   },
   loaderContainer: {
     position: 'absolute',
@@ -64,7 +63,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Constants.primaryColor,
+    zIndex: 1,
+  },
+  errorText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'red',
+    textAlign: 'center',
   },
 });
 

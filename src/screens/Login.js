@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Pressable,
 } from 'react-native';
 import {databases, DATABASE_ID, COLLECTION_ID_USERS} from '../../Appwrite';
 import {Query} from 'appwrite';
@@ -73,9 +74,7 @@ const LoginScreen = ({navigation}) => {
           accessibilityLabel="Password"
           accessibilityHint="Enter your password"
         />
-        <TouchableOpacity
-          style={styles.eyeIcon}
-          onPress={togglePasswordVisibility}>
+        <Pressable style={styles.eyeIcon} onPress={togglePasswordVisibility}>
           <Image
             source={
               passwordVisible
@@ -84,7 +83,7 @@ const LoginScreen = ({navigation}) => {
             }
             style={styles.eyeIconImage}
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={loginUser}>
@@ -170,7 +169,7 @@ const styles = StyleSheet.create({
     color: Constants.textColor,
     fontWeight: 'bold',
     fontSize: 18,
-    
+
     alignSelf: 'center',
   },
   subtitleTwo: {
