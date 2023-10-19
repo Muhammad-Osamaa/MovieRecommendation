@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {databases, DATABASE_ID, COLLECTION_ID_USERS} from '../../Appwrite'; // Assuming you have imported the necessary Appwrite modules
 import Constants from '../assets/Colors/Constants';
@@ -23,6 +24,13 @@ const RegisterScreen = ({navigation}) => {
     );
   };
   const registerUser = async (name, email, password) => {
+    if (!name || !email || !password) {
+      Alert.alert(
+        'Please fill all the Input Fields',
+        'All input Fields are required.',
+      );
+      return;
+    }
     try {
       // Assuming databases.createDocuments is an asynchronous function to create a user document in your database
       console.log(
@@ -53,6 +61,7 @@ const RegisterScreen = ({navigation}) => {
       }
     } catch (error) {
       console.error('Error registering user:', error);
+      console.error('Error response data:', error.response.data);
       throw error;
     }
   };
@@ -63,7 +72,7 @@ const RegisterScreen = ({navigation}) => {
     <>
       {isRegistred ? (
         <View style={styles.container}>
-          <Text style={styles.title}>Sign Up</Text>
+          <Text style={styles.title}>Sign up</Text>
           <Text style={styles.subtitle}>Create a new account</Text>
 
           <TextInput

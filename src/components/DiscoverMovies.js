@@ -64,11 +64,8 @@ const DiscoverMovies = () => {
   };
   useEffect(() => {
     getMovies();
-  }, []);
-  useEffect(() => {
     getDiscoverMovies();
   }, []);
-
   return (
     <View style={styles.container}>
       <SliderBox
@@ -77,17 +74,9 @@ const DiscoverMovies = () => {
         sliderBoxHeight={height * 0.5}
         paginationBoxStyle={{position: 'absolute', bottom: 0}}
       />
-      <Text
-        style={{
-          fontSize: 16,
-          color: Constants.baseColor,
-          padding: 5,
-          fontWeight: 'bold',
-        }}>
-        Recommended Movies
-      </Text>
+      <Text style={styles.title}>Recommended Movies</Text>
       {loading ? (
-        <ActivityIndicator size="large" color={Constants.logoColor} />
+        <ActivityIndicator size="large" color={Constants.textColor} />
       ) : (
         <FlatList
           data={movies}
@@ -103,6 +92,7 @@ const DiscoverMovies = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Constants.baseColor,
   },
   cardContainer: {
     padding: 10,
@@ -117,8 +107,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   title: {
-    marginTop: 5,
     fontSize: 16,
+    color: Constants.baseColor,
+    padding: 5,
     fontWeight: 'bold',
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {IMAGE_POSTER_URL} from '../configs/tmdbConfig';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Constants from '../assets/Colors/Constants';
 
 const Card = ({movie}) => {
   return (
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderRadius: 8,
     overflow: 'hidden',
+    backgroundColor: Constants.textColor,
   },
   poster: {
     width: cardWidth - 20,
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     maxWidth: cardWidth - 20,
+    color: Constants.baseColor,
   },
 });
 

@@ -6,6 +6,8 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
 import Constants from '../assets/Colors/Constants';
@@ -24,18 +26,22 @@ const formatDate = dateString => {
 const SearchBar = ({route}) => {
   const [query, setQuery] = useState(route.params.query);
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
   useEffect(() => {
     const searchMovies = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `${BASE_URL}?api_key=${API_KEY}&query=${query}`,
         );
         setResults(response.data.results);
       } catch (error) {
         console.error('Error searching for movies:', error);
+      } finally {
+        setLoading(false);
       }
     };
     if (query) {
@@ -52,45 +58,53 @@ const SearchBar = ({route}) => {
           <Ionicons
             name="arrow-back-sharp"
             size={24}
-            color={Constants.baseColor}
+            color={Constants.fadedColor}
           />
           <Text style={styles.heading}>Search Results</Text>
         </TouchableOpacity>
       </View>
-
-      <FlatList
-        data={results}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => (
-          <View style={styles.resultItem}>
-            <Image
-              source={{
-                uri: `${IMAGE_BASE_URL}/${item.poster_path}`, // Use the poster path for the image
-              }}
-              style={styles.image} // Adjust the image size as needed
-            />
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.releaseDate}>
-              {formatDate(item.release_date)}
-            </Text>
-          </View>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator
+          style={styles.loader}
+          size="large"
+          color={Constants.textColor}
+        />
+      ) : (
+        <FlatList
+          data={results}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => (
+            <View style={styles.resultItem}>
+              <Image
+                source={{
+                  uri: `${IMAGE_BASE_URL}/${item.poster_path}`, // Use the poster path for the image
+                }}
+                style={styles.image} // Adjust the image size as needed
+              />
+              <Text style={styles.title}>{item.title}</Text>
+              <Text style={styles.releaseDate}>
+                {formatDate(item.release_date)}
+              </Text>
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 };
+const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: Constants.backgroundColor,
+    backgroundColor: Constants.baseColor,
   },
   header: {
     paddingBottom: 10,
     elevation: 3,
   },
   heading: {
-    color: Constants.baseColor,
+    color: Constants.fadedColor,
     fontSize: 22,
     marginLeft: 16,
   },
@@ -98,22 +112,29 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    width: 100,
-    height: 150,
+    width: width - 32,
+    height: (width - 32) * 1.5,
     borderRadius: 8,
   },
   title: {
     fontSize: 18,
     color: Constants.baseColor,
     marginTop: 8,
+    fontWeight: 'bold',
   },
   releaseDate: {
     color: Constants.baseColor,
+    fontWeight: '600',
   },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     margin: 16,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
