@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: Constants.baseColor,
+    color: Constants.textColor,
     padding: 5,
     fontWeight: 'bold',
   },
