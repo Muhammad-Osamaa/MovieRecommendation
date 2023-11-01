@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     color: Constants.logoColor,
     fontSize: 22,
     marginLeft: 16,
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
   resultItem: {
     marginBottom: 20,

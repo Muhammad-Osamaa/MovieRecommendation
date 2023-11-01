@@ -14,6 +14,7 @@ import Constants from '../assets/Colors/Constants';
 import {Colors} from '../assets/Colors';
 import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Toast from 'react-native-toast-message';
 const API_KEY = '125ffb0958a93add2e78c6b803f41ab9';
 const BASE_URL = 'https://api.themoviedb.org/3/search/movie';
 
@@ -52,10 +53,32 @@ function HomeScreen() {
     }
   };
   const handleSearch = () => {
-    navigation.navigate('SearchBar', {query});
-    setQuery('');
+    if (query.trim() === '') {
+      console.log('Empty query detected');
+      Toast.show({
+        type: 'info',
+        position: 'bottom',
+        text1: 'please enter a movie name for searching',
+        visibilityTime: 3000,
+        autoHide: true,
+        customStyles: {
+          text1: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: '#fff',
+          },
+          container: {
+            backgroundColor: 'darkblue',
+            borderWidth: 1,
+            borderColor: 'white',
+          },
+        },
+      });
+    } else {
+      navigation.navigate('SearchBar', {query});
+      setQuery('');
+    }
   };
-
   return (
     <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
       <View style={styles.container}>
@@ -78,9 +101,12 @@ function HomeScreen() {
             color={Constants.textColor}
           />
           <Text style={styles.header}>Movies</Text>
+          
         </View>
+
         <DiscoverMovies />
       </View>
+      <Toast ref={ref => Toast.setRef(ref)} />
     </KeyboardAwareScrollView>
   );
 }
@@ -110,5 +136,4 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
 });
-
 export default HomeScreen;

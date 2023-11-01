@@ -29,10 +29,8 @@ const LoginScreen = ({navigation}) => {
         console.log('No user found with this email and password');
         return;
       }
-
       const document = querySnapshot.documents[0];
       console.log('Match found: ', document);
-
       if (document.name) {
         setEmail('');
         setPassword('');

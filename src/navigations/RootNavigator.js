@@ -5,8 +5,6 @@ import SplashScreen from '../screens/SplashScreen';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import HomeScreen from '../screens/HomeScreen';
-import Constants from '../assets/Colors/Constants';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SearchBar from '../components/SearchBar';
 
 const Stack = createNativeStackNavigator();
@@ -24,11 +22,13 @@ const RootNavigator = () => {
           component={Login}
           options={{headerShown: false}}
         />
+
         <Stack.Screen
           name="Register"
           component={Register}
           options={{headerShown: false}}
         />
+
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
