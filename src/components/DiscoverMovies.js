@@ -20,6 +20,7 @@ const DiscoverMovies = () => {
 
   const getMovies = async () => {
     try {
+      setLoading(true);
       let response = await fetch(
         'https://api.themoviedb.org/3/discover/movie?api_key=125ffb0958a93add2e78c6b803f41ab9',
       );
@@ -35,9 +36,9 @@ const DiscoverMovies = () => {
       }));
       setImages(images.slice(0, 10));
       setMovies(data.results);
-      setLoading(false);
     } catch (error) {
       console.error('ErrorImages:', error);
+    } finally {
       setLoading(false);
     }
   };
@@ -56,9 +57,9 @@ const DiscoverMovies = () => {
         title: movie.title,
       }));
       setMovies(movie);
-      setLoading(false);
     } catch (error) {
       console.error('ErrorMovies:', error);
+    } finally {
       setLoading(false);
     }
   };

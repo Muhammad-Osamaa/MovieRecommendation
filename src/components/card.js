@@ -1,27 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Image, StyleSheet, ActivityIndicator} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {IMAGE_POSTER_URL} from '../configs/tmdbConfig';
 import Constants from '../assets/Colors/Constants';
 
 const Card = ({movie}) => {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setLoading(true);
-  }, [movie]);
+  const handleImageLoad = () => {
+    setLoading(false);
+  };
   return (
     <View style={styles.cardContainer}>
+      <FastImage
+        style={[styles.poster, {opacity: loading ? 0 : 1}]}
+        source={{
+          uri: `${IMAGE_POSTER_URL}${movie.poster_path}`,
+          priority: FastImage.priority.low,
+        }}
+        onLoad={handleImageLoad}
+        onError={handleImageLoad}
+      />
       {loading && (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={Constants.baseColor} />
         </View>
       )}
-      <Image
-        style={[styles.poster, {opacity: loading ? 0 : 1}]}
-        source={{uri: `${IMAGE_POSTER_URL}${movie.poster_path}`}}
-        onLoad={() => setLoading(false)}
-        onError={() => setLoading(false)}
-      />
       <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {movie.title}
       </Text>

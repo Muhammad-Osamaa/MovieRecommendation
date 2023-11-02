@@ -76,41 +76,42 @@ function HomeScreen() {
             },
           },
         });
-      } else {
-        navigation.navigate('SearchBar', {query});
-        setQuery('');
       }
+    } else {
+      navigation.navigate('SearchBar', {query});
+      setQuery('');
     }
-    return (
-      <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
-        <View style={styles.container}>
-          <View style={styles.searchContainer}>
-            <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
-              <Icon
-                name="search"
-                size={20}
-                color={Constants.logoColor}
-                style={styles.searchIcon}
-              />
-            </TouchableOpacity>
-
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search Here"
-              placeholderTextColor={Constants.logoColor}
-              value={query}
-              onChangeText={setQuery}
-              color={Constants.textColor}
-            />
-            <Text style={styles.header}>Movies</Text>
-          </View>
-          <DiscoverMovies />
-        </View>
-        <Toast ref={toastRef} />
-      </KeyboardAwareScrollView>
-    );
   };
+  return (
+    <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
+      <View style={styles.container}>
+        <View style={styles.searchContainer}>
+          <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
+            <Icon
+              name="search"
+              size={20}
+              color={Constants.logoColor}
+              style={styles.searchIcon}
+            />
+          </TouchableOpacity>
+
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search Here"
+            placeholderTextColor={Constants.logoColor}
+            value={query}
+            onChangeText={setQuery}
+            color={Constants.textColor}
+          />
+          <Text style={styles.header}>Movies</Text>
+        </View>
+        <DiscoverMovies />
+      </View>
+      <Toast ref={toastRef} />
+    </KeyboardAwareScrollView>
+  );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
