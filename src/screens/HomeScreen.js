@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ function HomeScreen() {
   const navigation = useNavigation();
   const [query, setQuery] = useState('');
   const [categories, setCategories] = useState([]);
+  const toastRef = useRef(null);
 
   useEffect(() => {
     // Load movie categories from AsyncStorage on component mount
@@ -55,60 +56,60 @@ function HomeScreen() {
   const handleSearch = () => {
     if (query.trim() === '') {
       console.log('Empty query detected');
-      Toast.show({
-        type: 'info',
-        position: 'bottom',
-        text1: 'please enter a movie name for searching',
-        visibilityTime: 3000,
-        autoHide: true,
-        customStyles: {
-          text1: {
-            fontSize: 18,
-            fontWeight: 'bold',
-            color: '#fff',
+      if (toastRef.current) {
+        toastRef.current.show({
+          type: 'info',
+          position: 'bottom',
+          text1: 'Please enter a movie name for searching',
+          visibilityTime: 3000,
+          autoHide: true,
+          customStyles: {
+            text1: {
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: '#fff',
+            },
+            container: {
+              backgroundColor: 'darkblue',
+              borderWidth: 1,
+              borderColor: 'white',
+            },
           },
-          container: {
-            backgroundColor: 'darkblue',
-            borderWidth: 1,
-            borderColor: 'white',
-          },
-        },
-      });
-    } else {
-      navigation.navigate('SearchBar', {query});
-      setQuery('');
+        });
+      } else {
+        navigation.navigate('SearchBar', {query});
+        setQuery('');
+      }
     }
-  };
-  return (
-    <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
-          <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
-            <Icon
-              name="search"
-              size={20}
-              color={Constants.logoColor}
-              style={styles.searchIcon}
+    return (
+      <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
+        <View style={styles.container}>
+          <View style={styles.searchContainer}>
+            <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
+              <Icon
+                name="search"
+                size={20}
+                color={Constants.logoColor}
+                style={styles.searchIcon}
+              />
+            </TouchableOpacity>
+
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search Here"
+              placeholderTextColor={Constants.logoColor}
+              value={query}
+              onChangeText={setQuery}
+              color={Constants.textColor}
             />
-          </TouchableOpacity>
-
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search Here"
-            placeholderTextColor={Constants.logoColor}
-            value={query}
-            onChangeText={setQuery}
-            color={Constants.textColor}
-          />
-          <Text style={styles.header}>Movies</Text>
-          
+            <Text style={styles.header}>Movies</Text>
+          </View>
+          <DiscoverMovies />
         </View>
-
-        <DiscoverMovies />
-      </View>
-      <Toast ref={ref => Toast.setRef(ref)} />
-    </KeyboardAwareScrollView>
-  );
+        <Toast ref={toastRef} />
+      </KeyboardAwareScrollView>
+    );
+  };
 }
 const styles = StyleSheet.create({
   container: {

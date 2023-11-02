@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const API_KEY = '125ffb0958a93add2e78c6b803f41ab9';
 const BASE_URL = 'https://api.themoviedb.org/3/search/movie';
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w185'; // Adjust the image size as needed
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w185'; 
 
 const formatDate = dateString => {
   const options = {year: 'numeric', month: 'long', day: 'numeric'};

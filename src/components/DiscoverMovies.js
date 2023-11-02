@@ -33,7 +33,7 @@ const DiscoverMovies = () => {
         poster: `${IMAGE_POSTER_URL}${movie.poster_path}`,
         title: movie.title,
       }));
-      setImages(images);
+      setImages(images.slice(0, 10));
       setMovies(data.results);
       setLoading(false);
     } catch (error) {
