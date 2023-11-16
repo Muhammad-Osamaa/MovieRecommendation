@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, Animated, Easing} from 'react-native';
+import {View, StyleSheet, Animated, Easing} from 'react-native';
 import Constants from '../assets/Colors/Constants';
 
 const SplashScreen = ({navigation}) => {
