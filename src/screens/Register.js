@@ -14,7 +14,7 @@ const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let [isRegistred, setIsRejistered] = useState(true);
+  let [isRegistred, setIsRegistered] = useState(true);
 
   const CustomButton = ({title, onPress}) => {
     return (
@@ -57,7 +57,7 @@ const RegisterScreen = ({navigation}) => {
         console.log('No user found with this email and password');
         return;
       } else {
-        setIsRejistered(false);
+        setIsRegistered(false);
       }
     } catch (error) {
       console.error('Error registering user:', error);
