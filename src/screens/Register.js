@@ -15,7 +15,30 @@ const RegisterScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   let [isRegistred, setIsRegistered] = useState(true);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isNameFocused, setIsNameFocused] = useState(false);
 
+  const handleNameFocus = () => {
+    setIsNameFocused(true);
+    setIsEmailFocused(false);
+    setIsPasswordFocused(false);
+  };
+  const handleEmailFocus = () => {
+    setIsNameFocused(false);
+    setIsEmailFocused(true);
+    setIsPasswordFocused(false);
+  };
+  const handlePasswordFocus = () => {
+    setIsNameFocused(false);
+    setIsEmailFocused(false);
+    setIsPasswordFocused(true);
+  };
+  const handleBlur = () => {
+    setIsNameFocused(false);
+    setIsEmailFocused(false);
+    setIsPasswordFocused(false);
+  };
   const CustomButton = ({title, onPress}) => {
     return (
       <TouchableOpacity style={styles.rgbutton} onPress={onPress}>
