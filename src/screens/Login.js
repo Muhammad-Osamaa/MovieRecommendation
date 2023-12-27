@@ -16,6 +16,21 @@ const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+  const handleEmailFocus = () => {
+    setIsEmailFocused(true);
+    setIsPasswordFocused(false);
+  };
+  const handlePasswordFocus = () => {
+    setIsEmailFocused(false);
+    setIsPasswordFocused(true);
+  };
+  const handleBlur = () => {
+    setIsEmailFocused(false);
+    setIsPasswordFocused(false);
+  };
 
   const loginUser = async () => {
     try {
@@ -50,13 +65,33 @@ const LoginScreen = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Sign in</Text>
       <Text style={styles.subtitle}>Login to your account</Text>
-      <View style={styles.inputView}>
+      <View
+        style={[
+          styles.inputView,
+          {
+            borderColor: isEmailFocused
+              ? Constants.logoColor
+              : Constants.grayColor,
+            backgroundColor: isEmailFocused
+              ? Constants.textColor
+              : Constants.darkGray,
+          },
+        ]}>
         <TextInput
-          style={styles.input}
+          style={[
+            styles.input,
+            {
+              borderColor: isEmailFocused
+                ? Constants.logoColor
+                : Constants.grayColor,
+            },
+          ]}
           placeholder="Email"
           placeholderTextColor="#333" // Darken the placeholder text color
           value={email}
           onChangeText={text => setEmail(text)}
+          onFocus={handleEmailFocus}
+          onBlur={handleBlur}
           accessibilityLabel="Email"
           accessibilityHint="Enter your email address"
         />
