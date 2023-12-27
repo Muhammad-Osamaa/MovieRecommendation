@@ -99,24 +99,51 @@ const RegisterScreen = ({navigation}) => {
           <Text style={styles.subtitle}>Create a new account</Text>
 
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                borderColor: isNameFocused
+                  ? Constants.logoColor
+                  : Constants.grayColor,
+              },
+            ]}
             placeholder="Full name"
             value={name}
             onChangeText={text => setName(text)}
+            onFocus={handleNameFocus}
+            onBlur={handleBlur}
           />
 
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                borderColor: isEmailFocused
+                  ? Constants.logoColor
+                  : Constants.grayColor,
+              },
+            ]}
             placeholder="Email"
             value={email}
             onChangeText={text => setEmail(text)}
+            onFocus={handleEmailFocus}
+            onBlur={handleBlur}
           />
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                borderColor: isPasswordFocused
+                  ? Constants.logoColor
+                  : Constants.grayColor,
+              },
+            ]}
             placeholder="Password"
             secureTextEntry={true}
             value={password}
             onChangeText={text => setPassword(text)}
+            onFocus={handlePasswordFocus}
+            onBlur={handleBlur}
           />
           <CustomButton
             title="Create Account"
