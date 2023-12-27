@@ -2,9 +2,10 @@ const Constants = {
   textColor: '#fff',
   baseColor: '#000000',
   logoColor: '#279eff',
-  grayColor: '#dbdbdb',
-  darkGray: '#7a7a7a',
+  grayColor: '#f4f4f4',
+  darkGray: '#dbdbdb',
   fadedColor: '#969696',
+  inputBackground: '#F4F4F4',
   secondaryColor: '#362FD9',
   primaryColor: 'rgba(0,0,0,0.7)',
 };

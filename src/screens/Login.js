@@ -72,9 +72,6 @@ const LoginScreen = ({navigation}) => {
             borderColor: isEmailFocused
               ? Constants.logoColor
               : Constants.grayColor,
-            backgroundColor: isEmailFocused
-              ? Constants.textColor
-              : Constants.darkGray,
           },
         ]}>
         <TextInput
@@ -83,11 +80,13 @@ const LoginScreen = ({navigation}) => {
             {
               borderColor: isEmailFocused
                 ? Constants.logoColor
-                : Constants.grayColor,
+                : Constants.darkGray,
+              backgroundColor: isEmailFocused
+                ? Constants.textColor
+                : Constants.inputBackground,
             },
           ]}
           placeholder="Email"
-          placeholderTextColor="#333" // Darken the placeholder text color
           value={email}
           onChangeText={text => setEmail(text)}
           onFocus={handleEmailFocus}
@@ -96,13 +95,32 @@ const LoginScreen = ({navigation}) => {
           accessibilityHint="Enter your email address"
         />
       </View>
-      <View style={styles.inputView}>
+      <View
+        style={[
+          styles.inputView,
+          {
+            borderColor: isPasswordFocused
+              ? Constants.logoColor
+              : Constants.grayColor,
+          },
+        ]}>
         <TextInput
-          style={styles.input}
+          style={[
+            styles.input,
+            {
+              borderColor: isPasswordFocused
+                ? Constants.logoColor
+                : Constants.darkGray,
+                backgroundColor: isPasswordFocused
+                ? Constants.textColor
+                : Constants.inputBackground,
+            },
+          ]}
           placeholder="Password"
-          placeholderTextColor="#333" // Darken the placeholder text color
           secureTextEntry={!passwordVisible}
           value={password}
+          onFocus={handlePasswordFocus}
+          onBlur={handleBlur}
           onChangeText={text => setPassword(text)}
           accessibilityLabel="Password"
           accessibilityHint="Enter your password"
@@ -161,9 +179,13 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 50,
     marginTop: 10,
-    borderColor: Constants.logoColor,
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
+  },
+  input: {
+    backgroundColor: Constants.inputBackground,
+    paddingLeft: 10,
   },
   eyeIcon: {
     position: 'absolute',
@@ -185,7 +207,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 50,
     marginBottom: 10,
-    marginTop: 10,
+    marginVertical: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
@@ -194,7 +216,6 @@ const styles = StyleSheet.create({
   button: {
     width: '99%',
     height: 50,
-    paddingBottom: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -207,7 +228,6 @@ const styles = StyleSheet.create({
   },
   subtitleTwo: {
     fontSize: 16,
-    marginTop: 20,
     color: '#C7EEFF',
   },
   registerButton: {
