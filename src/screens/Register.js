@@ -18,6 +18,7 @@ const RegisterScreen = ({navigation}) => {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isNameFocused, setIsNameFocused] = useState(false);
+  const [isAllInputFilled, setIsAllInputFilled] = useState(false);
 
   const handleNameFocus = () => {
     setIsNameFocused(true);
@@ -39,6 +40,9 @@ const RegisterScreen = ({navigation}) => {
     setIsEmailFocused(false);
     setIsPasswordFocused(false);
   };
+  useEffect(()=>{
+    setIsAllInputFilled(name !== '' && email !== '' && password !== '');
+  },[name,email,password]);
   const CustomButton = ({title, onPress}) => {
     return (
       <TouchableOpacity style={styles.rgbutton} onPress={onPress}>
@@ -148,6 +152,10 @@ const RegisterScreen = ({navigation}) => {
           <CustomButton
             title="Create Account"
             onPress={() => registerUser(name, email, password)}
+            style={{
+              backgroundColor: isAllInputFilled ? '#0802A3' : '#FFFFFF',
+            }}
+            textStyle={{color: isAllInputFilled ? 'white' : 'red'}}
           />
 
           <Text style={styles.subtitleTwo}>
@@ -210,13 +218,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
     padding: 5,
-    backgroundColor: '#0802A3',
+    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
   },
   buttonText: {
-    color: 'white',
+    color: 'red',
     fontWeight: 'bold',
   },
 
