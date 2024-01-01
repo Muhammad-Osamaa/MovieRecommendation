@@ -8,5 +8,6 @@ const Constants = {
   inputBackground: '#F4F4F4',
   secondaryColor: '#362FD9',
   primaryColor: 'rgba(0,0,0,0.7)',
+  redColor: 'red'
 };
 export default Constants;

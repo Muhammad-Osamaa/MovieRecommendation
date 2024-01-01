@@ -105,6 +105,7 @@ const RegisterScreen = ({navigation}) => {
                 borderColor: isNameFocused
                   ? Constants.logoColor
                   : Constants.grayColor,
+                  backgroundColor: isNameFocused ? Constants.textColor : Constants.grayColor,
               },
             ]}
             placeholder="Full name"
@@ -121,6 +122,7 @@ const RegisterScreen = ({navigation}) => {
                 borderColor: isEmailFocused
                   ? Constants.logoColor
                   : Constants.grayColor,
+                  backgroundColor: isNameFocused ? Constants.textColor : Constants.grayColor,
               },
             ]}
             placeholder="Email"
@@ -136,6 +138,7 @@ const RegisterScreen = ({navigation}) => {
                 borderColor: isPasswordFocused
                   ? Constants.logoColor
                   : Constants.grayColor,
+                  backgroundColor: isPasswordFocused ? Constants.textColor : Constants.fadedColor,
               },
             ]}
             placeholder="Password"
@@ -196,13 +199,12 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     height: 50,
-    borderColor: Constants.logoColor,
+    // borderColor: Constants.logoColor,
     borderWidth: 2,
     marginBottom: 10,
     padding: 5,
     paddingLeft: 10,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
   },
   rgbutton: {
     width: '80%',
