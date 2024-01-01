@@ -3,7 +3,7 @@ const Constants = {
   baseColor: '#000000',
   logoColor: '#279eff',
   grayColor: '#f4f4f4',
-  darkGray: '#dbdbdb',
+  darkGray: '#d1d1d1',
   fadedColor: '#969696',
   inputBackground: '#F4F4F4',
   secondaryColor: '#362FD9',
