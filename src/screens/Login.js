@@ -18,6 +18,7 @@ const LoginScreen = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isEmaiFilled, setIsEmailFilled] = useState(false);
 
   const handleEmailFocus = () => {
     setIsEmailFocused(true);
@@ -33,6 +34,9 @@ const LoginScreen = ({navigation}) => {
   };
 
   const loginUser = async () => {
+    if (email.trim() !== '') {
+      setIsEmailFilled(true);
+    }
     try {
       const querySnapshot = await databases.listDocuments(
         DATABASE_ID,
@@ -60,7 +64,6 @@ const LoginScreen = ({navigation}) => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign in</Text>
@@ -88,54 +91,59 @@ const LoginScreen = ({navigation}) => {
           ]}
           placeholder="Email"
           value={email}
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => {
+            setEmail(text);
+            setIsEmailFilled(text.trim() !== '');
+          }}
           onFocus={handleEmailFocus}
           onBlur={handleBlur}
           accessibilityLabel="Email"
           accessibilityHint="Enter your email address"
         />
       </View>
-      <View
-        style={[
-          styles.inputView,
-          {
-            borderColor: isPasswordFocused
-              ? Constants.logoColor
-              : Constants.grayColor,
-          },
-        ]}>
-        <TextInput
+      {isEmaiFilled && email.endsWith('@gmail.com') && (
+        <View
           style={[
-            styles.input,
+            styles.inputView,
             {
               borderColor: isPasswordFocused
                 ? Constants.logoColor
-                : Constants.darkGray,
-                backgroundColor: isPasswordFocused
-                ? Constants.textColor
-                : Constants.inputBackground,
+                : Constants.grayColor,
             },
-          ]}
-          placeholder="Password"
-          secureTextEntry={!passwordVisible}
-          value={password}
-          onFocus={handlePasswordFocus}
-          onBlur={handleBlur}
-          onChangeText={text => setPassword(text)}
-          accessibilityLabel="Password"
-          accessibilityHint="Enter your password"
-        />
-        <Pressable style={styles.eyeIcon} onPress={togglePasswordVisibility}>
-          <Image
-            source={
-              passwordVisible
-                ? require('../assets/images/eyeOpen.png')
-                : require('../assets/images/eyeClosed.png')
-            }
-            style={styles.eyeIconImage}
+          ]}>
+          <TextInput
+            style={[
+              styles.input,
+              {
+                borderColor: isPasswordFocused
+                  ? Constants.logoColor
+                  : Constants.darkGray,
+                backgroundColor: isPasswordFocused
+                  ? Constants.textColor
+                  : Constants.inputBackground,
+              },
+            ]}
+            placeholder="Password"
+            secureTextEntry={!passwordVisible}
+            value={password}
+            onFocus={handlePasswordFocus}
+            onBlur={handleBlur}
+            onChangeText={text => setPassword(text)}
+            accessibilityLabel="Password"
+            accessibilityHint="Enter your password"
           />
-        </Pressable>
-      </View>
+          <Pressable style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+            <Image
+              source={
+                passwordVisible
+                  ? require('../assets/images/eyeOpen.png')
+                  : require('../assets/images/eyeClosed.png')
+              }
+              style={styles.eyeIconImage}
+            />
+          </Pressable>
+        </View>
+      )}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={loginUser}>
           <Text style={styles.buttonText}>Sign In</Text>
@@ -228,7 +236,7 @@ const styles = StyleSheet.create({
   },
   subtitleTwo: {
     fontSize: 16,
-    color: '#C7EEFF',
+    color: Constants.textColor,
   },
   registerButton: {
     color: Constants.logoColor,
