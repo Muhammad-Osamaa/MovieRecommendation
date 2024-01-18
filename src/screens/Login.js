@@ -75,6 +75,8 @@ const LoginScreen = ({navigation}) => {
             borderColor: isEmailFocused
               ? Constants.logoColor
               : Constants.grayColor,
+            marginBottom:
+              isEmaiFilled && email.endsWith('@gmail.com') ? 10 : -45,
           },
         ]}>
         <TextInput
