@@ -51,7 +51,7 @@ const DiscoverMovies = () => {
         throw new Error('Network response was not fine for DiscoveryMovies');
       }
       const data = await response.json();
-      console.log('DiscoveryMoviesData====>>>', data);
+      //console.log('DiscoveryMoviesData====>>>', data);
       const movie = data.results.map(movie => ({
         poster: `${IMAGE_POSTER_URL}${movie.poster_path}`,
         title: movie.title,
